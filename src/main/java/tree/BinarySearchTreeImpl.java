@@ -10,7 +10,7 @@ import java.util.Queue;
 public class BinarySearchTreeImpl {
 
   public static void main(String[] args) {
-	BinaryTree tree = new BinaryTree();
+	BinarySearchTree tree = new BinarySearchTree();
 	tree.addNode(6);
 	tree.addNode(4);
 	tree.addNode(5);
@@ -18,12 +18,10 @@ public class BinarySearchTreeImpl {
 	tree.addNode(8);
 	tree.addNode(7);
 	tree.addNode(9);
-
-	tree.traverseLevelOrder();
-	System.out.println();
+	System.out.println(tree.isMirror());
   }
 
-  public static class BinaryTree {
+  public static class BinarySearchTree {
 	Node root;
 
 	public void addNode(Integer val) {
@@ -100,10 +98,12 @@ public class BinarySearchTreeImpl {
 		if (node.left == null && node.right == null) { //node has no children
 		  return null;
 		}
-		if (node.left == null) { // node has 1 child. Here we're returning the non-null child so it can be assigned to the parent node.
+		if (node.left ==
+			null) { // node has 1 child. Here we're returning the non-null child so it can be assigned to the parent node.
 		  return node.right;
 		}
-		if (node.right == null) { // node has 1 child. Here we're returning the non-null child so it can be assigned to the parent node.
+		if (node.right ==
+			null) { // node has 1 child. Here we're returning the non-null child so it can be assigned to the parent node.
 		  return node.left;
 		}
 //		Finally, we have to handle the case where the node has two children.
@@ -127,19 +127,19 @@ public class BinarySearchTreeImpl {
 	  return node.left == null ? node.val : findSmallestNode(node.left);
 	}
 
-//	!!!! Depth-First Search
+	//	!!!! Depth-First Search
 //	Depth-first search is a type of traversal that goes deep as much as possible in every child before exploring the next sibling.
 	//The in-order traversal consists of first visiting the left sub-tree, then the root node, and finally the right sub-tree:
 	public void inOrderTraverse() {
 	  inOrderTraverse(root);
 	}
 
-	private void inOrderTraverse(Node node){
-		if(node != null){
-		  inOrderTraverse(node.left);
-		  System.out.println(node.val);
-		  inOrderTraverse(node.right);
-		}
+	private void inOrderTraverse(Node node) {
+	  if (node != null) {
+		inOrderTraverse(node.left);
+		System.out.println(node.val);
+		inOrderTraverse(node.right);
+	  }
 	}
 
 	//Pre-order traversal visits first the root node, then the left sub-tree, and finally the right sub-tree:
@@ -147,12 +147,12 @@ public class BinarySearchTreeImpl {
 	  preOrderTraverse(root);
 	}
 
-	private void preOrderTraverse(Node node){
-		if(node != null){
-		  System.out.println(node.val);
-		  preOrderTraverse(node.left);
-		  preOrderTraverse(node.right);
-		}
+	private void preOrderTraverse(Node node) {
+	  if (node != null) {
+		System.out.println(node.val);
+		preOrderTraverse(node.left);
+		preOrderTraverse(node.right);
+	  }
 	}
 
 	//Post-order traversal visits the left sub-tree, the right subt-ree, and the root node at the end:
@@ -160,42 +160,41 @@ public class BinarySearchTreeImpl {
 	  postOrderTraverse(root);
 	}
 
-	private void postOrderTraverse(Node node){
-		if(node != null){
-		  postOrderTraverse(node.left);
-		  postOrderTraverse(node.right);
-		  System.out.println(node.val);
-		}
+	private void postOrderTraverse(Node node) {
+	  if (node != null) {
+		postOrderTraverse(node.left);
+		postOrderTraverse(node.right);
+		System.out.println(node.val);
+	  }
 	}
-
 
 
 	//Breadth-First Search
 //	This is another common type of traversal that visits all the nodes of a level before going to the next level.
 //	This kind of traversal is also called level-order, and visits all the levels of the tree starting from the root, and from left to right.
 
-	public void traverseLevelOrder(){
+	public void traverseLevelOrder() {
 	  traverseLevelOrder(root);
 	}
 
 	private void traverseLevelOrder(Node root) {
-	  if(root == null){
+	  if (root == null) {
 		return;
 	  }
 
 	  //	For the implementation, we'll use a Queue to hold the nodes from each level in order.
-	  //	We'll extract each node from the list, print its values, then add its children to the queue:
+	  //	We'll extract each node from the list, print its values, then addLeft its children to the queue:
 	  Queue<Node> nodes = new LinkedList<>();
 	  nodes.add(root);
 
-	  while(!nodes.isEmpty()){
+	  while (!nodes.isEmpty()) {
 		Node node = nodes.remove();//Retrieves and removes the head of this queue.
 		System.out.print(" " + node.val);
 
-		if(node.left != null){
+		if (node.left != null) {
 		  nodes.add(node.left);
 		}
-		if(node.right != null){
+		if (node.right != null) {
 		  nodes.add(node.right);
 		}
 
@@ -203,6 +202,21 @@ public class BinarySearchTreeImpl {
 	  }
 	}
 
+	public boolean isMirror() {
+	  return isMirror(root, root);
+	}
+
+	//bst cant be mirrored
+	private boolean isMirror(Node t1, Node t2) {
+	  if (t1 == null && t2 == null) {
+		return true;
+	  }
+	  if (t1 == null || t2 == null) {
+		return false;
+	  }
+
+	  return (t1.val == t2.val) && isMirror(t1.left, t2.right) && isMirror(t1.right,t2.left);
+	}
   }
 
 
